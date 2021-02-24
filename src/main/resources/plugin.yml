@@ -1,0 +1,6 @@
+name: HBAProject
+version: ${project.version}
+main: hbaproject.hbaproject.HBAProject
+api-version: 1.16
+authors: [ Hyunsol ]
+description: HBAProject Plugin
