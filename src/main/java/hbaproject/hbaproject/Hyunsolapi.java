@@ -1,5 +1,9 @@
 package hbaproject.hbaproject;
 
+import com.comphenix.protocol.PacketType;
+import com.comphenix.protocol.events.PacketContainer;
+import com.comphenix.protocol.wrappers.EnumWrappers;
+import com.comphenix.protocol.wrappers.WrappedDataWatcher;
 import net.md_5.bungee.api.chat.*;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -20,23 +24,35 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class Hyunsolapi {
-    public void openGUI(Player p, int slot, String name) {
+
+    public static void hansukone(Entity e, EnumWrappers.EntityPose sex) {
+        final PacketContainer packet = HBAProject.getInstace().protocolManager.createPacket(PacketType.Play.Server.ENTITY_METADATA);
+
+        final WrappedDataWatcher.WrappedDataWatcherObject obj = new WrappedDataWatcher.WrappedDataWatcherObject(6, WrappedDataWatcher.Registry.get(EnumWrappers.getEntityPoseClass()));
+        final WrappedDataWatcher dw = WrappedDataWatcher.getEntityWatcher(e);
+
+        dw.setObject(obj, sex.toNms());
+        packet.getIntegers().write(0, e.getEntityId());
+        packet.getWatchableCollectionModifier().write(0, dw.getWatchableObjects());
+    }
+
+    public static void openGUI(Player p, int slot, String name) {
         PlayerGlobal.inv.put(p.getUniqueId(),Bukkit.createInventory(null, slot, name));
         p.openInventory(PlayerGlobal.inv.get(p.getUniqueId()));
     }
 
-    public void putItem(Player p, int slot, ItemStack item) {
+    public static void putItem(Player p, int slot, ItemStack item) {
         PlayerGlobal.inv.get(p.getUniqueId()).setItem(slot,item);
     }
 
-    public void clearGUI(Player p,int slot) {
+    public static void clearGUI(Player p,int slot) {
         ItemStack item = new ItemStack(Material.AIR);
         for(int i=0;i<slot;i++){
             PlayerGlobal.inv.get(p.getUniqueId()).setItem(i,item);
         }
     }
 
-    public String getBetweenStr(String str, int startIndex, int endIndex) {
+    public static String getBetweenStr(String str, int startIndex, int endIndex) {
         String result="";
 
         for(int i=startIndex;i<endIndex;i++){
@@ -50,41 +66,16 @@ public class Hyunsolapi {
         return result;
     }
 
-    public String[] getTime() {
+    public static String[] getTime() {
         SimpleDateFormat format = new SimpleDateFormat ( "yyyy-MM-dd-HH-mm-ss");
         Date time = new Date();
 
         return format.format(time).split("-");
     }
 
-    public void setBlock(Location loc, Material mat) { World world = loc.getWorld(); Block b = world.getBlockAt(loc); b.setType(mat); }
+    public static void setBlock(Location loc, Material mat) { World world = loc.getWorld(); Block b = world.getBlockAt(loc); b.setType(mat); }
 
-    public void fill(Location loc1, Location loc2, Material m) {
-        int x1 = Integer.parseInt(""+Math.round(loc1.getX())); int x2 = Integer.parseInt(""+Math.round(loc2.getX()));
-        int y1 = Integer.parseInt(""+Math.round(loc1.getY())); int y2 = Integer.parseInt(""+Math.round(loc2.getY()));
-        int z1 = Integer.parseInt(""+Math.round(loc1.getZ())); int z2 = Integer.parseInt(""+Math.round(loc2.getZ()));
-
-        // 반복문 변수 선언
-        int I_X; int G_X;
-        int I_Y; int G_Y;
-        int I_Z; int G_Z;
-
-        // 시작지점 및 기준 정의 ================
-        if(x1 > x2) { I_X = x2; G_X = x1; } else { I_X=x1; G_X=x2; }
-        if(y1 > y2) { I_Y = y2; G_Y = y1; } else { I_Y=y1; G_Y=y2; }
-        if(z1 > z2) { I_Z = z2; G_Z = z1; } else { I_Z=z1; G_Z=z2; }
-
-        // 반복문 시작 ========================
-        for(int x=I_X;x < (G_X+1);x++){
-            for(int y=I_Y;y < (G_Y+1);y++){
-                for(int z=I_Z;z < (G_Z+1);z++){
-                    setBlock(new Location(loc1.getWorld(), x,y,z), m);
-                }
-            }
-        }
-    }
-
-    public boolean isBetween(int GiJun, int num1, int num2) {
+    public static boolean isBetween(int GiJun, int num1, int num2) {
         for(int i=num1;i<num2;i++){
             if(GiJun == i) return true;
         }
@@ -93,7 +84,7 @@ public class Hyunsolapi {
         // isBetween : GiJun이 num1~num2 사이에 있는 정수인지를 확인 후 boolean을 반환.
     }
 
-    public boolean isNearPlayer(Player me, Player targetPlayer, double x, double y, double z){
+    public static boolean isNearPlayer(Player me, Player targetPlayer, double x, double y, double z){
         for(Entity e: me.getLocation().getNearbyEntities(x,y,z)){
             if(e.getName().equals(targetPlayer.getName())) return true;
         }
@@ -102,7 +93,7 @@ public class Hyunsolapi {
         // isNeraPlayer : 근처에 특정 플레이어가 있는지를 확인 후 boolean을 반환.
     }
 
-    public ArrayList<Block> getNearBlock(Location loc, int radius, Boolean containsAir) {
+    public static ArrayList<Block> getNearBlock(Location loc, int radius, Boolean containsAir) {
         ArrayList<Block> blocks = new ArrayList<Block>();
 
         for (int x = (loc.getBlockX()-radius); x <= (loc.getBlockX()+radius); x++) {
@@ -125,7 +116,7 @@ public class Hyunsolapi {
         // getNearBlock : 특정 위치의 radius안에 있는 블럭들을 반환함.
     }
 
-    public Boolean isNearBlock(Location loc, Material b, int radius) {
+    public static Boolean isNearBlock(Location loc, Material b, int radius) {
         for(Block tmp : getNearBlock(loc,radius,false)){
             if(tmp.getType() == b) return true;
         }
@@ -140,7 +131,7 @@ public class Hyunsolapi {
         return ""+loc.getWorld().getBiome((int)(Math.round(loc.getX())),(int)(Math.round(loc.getY())),(int)(Math.round(loc.getZ())));
     }
 
-    public boolean isWithin(Location targetLoc, Location pos1, Location pos2) {
+    public static boolean isWithin(Location targetLoc, Location pos1, Location pos2) {
         // 타깃 플레이어 위치 x,y,z 정의
         int x = Integer.parseInt(""+Math.round(targetLoc.getX()));
         int y = Integer.parseInt(""+Math.round(targetLoc.getY()));
@@ -163,17 +154,17 @@ public class Hyunsolapi {
         // isWithin : targetPlayer 가 loc1,2 사이에 있는지 확인후 boolean을 반환함.
     }
 
-    public void bs(String str) {
+    public static void bs(String str) {
         Bukkit.getConsoleSender().sendMessage(str);
 
         // bs : 버킷에게 메세지를 보냄. (Bukkit, sendMessage 의 약자)
     }
 
-    public void push(Player p, int m) {
+    public static void push(Player p, int m) {
         p.setVelocity(p.getLocation().getDirection().multiply(m));
     }
 
-    public void sendMessage(Player p, String msg, String clickEvent, String hoverEvent){
+    public static void sendMessage(Player p, String msg, String clickEvent, String hoverEvent){
         TextComponent message = new TextComponent(msg);
         if(!clickEvent.equals("")){
             message.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, clickEvent));
@@ -184,7 +175,7 @@ public class Hyunsolapi {
         p.sendMessage(message);
     }
 
-    public boolean isNum(String str) {
+    public static boolean isNum(String str) {
         try {
             double d = Double.parseDouble(str);
             return true;
@@ -196,9 +187,9 @@ public class Hyunsolapi {
     }
 
     // HashMap Save & Load ===================================
-    public String sans;
+    public static String sans;
 
-    private String ObjectToByte(Object e) {
+    private static String ObjectToByte(Object e) {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         try {
             BukkitObjectOutputStream dataOutput = new BukkitObjectOutputStream(outputStream);
@@ -211,7 +202,7 @@ public class Hyunsolapi {
         return null;
     }
 
-    private Object ByteToObject(String str) {
+    private static Object ByteToObject(String str) {
         ByteArrayInputStream inputStream = new ByteArrayInputStream(Base64Coder.decodeLines(str));
         try {
             BukkitObjectInputStream dataInput = new BukkitObjectInputStream(inputStream);
@@ -223,7 +214,7 @@ public class Hyunsolapi {
         return null;
     }
 
-    public void save(HashMap map, String fileName) {
+    public static void save(HashMap map, String fileName) {
         File f = new File(HBAProject.getInstace().getDataFolder()+"/"+fileName+".hyun");
 
         try {
@@ -244,7 +235,7 @@ public class Hyunsolapi {
         }
     }
 
-    public void load(HashMap map, String fileName) {
+    public static void load(HashMap map, String fileName) {
         String line = "";
 
         File f = new File(HBAProject.getInstace().getDataFolder()+"/"+fileName);
