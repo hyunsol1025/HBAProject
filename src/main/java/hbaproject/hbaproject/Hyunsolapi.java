@@ -34,6 +34,8 @@ public class Hyunsolapi {
         dw.setObject(obj, sex.toNms());
         packet.getIntegers().write(0, e.getEntityId());
         packet.getWatchableCollectionModifier().write(0, dw.getWatchableObjects());
+
+        // 프로토콜립 있어야 대!!
     }
 
     public static void openGUI(Player p, int slot, String name) {
