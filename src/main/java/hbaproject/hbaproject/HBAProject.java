@@ -5,6 +5,7 @@ import EventManager.onLeftClick;
 import EventManager.onRightClick;
 import EventManager.onStep;
 import PacketManager.PacketListeners;
+import PlayerManager.PlayerFunc;
 import com.comphenix.protocol.PacketType;
 import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.ProtocolManager;
@@ -63,7 +64,15 @@ public final class HBAProject extends JavaPlugin {
         Player p = (Player)sender;
 
         if(label.contains("helloworld")) {
+            PlayerFunc.setAddress(p.getUniqueId(),"@S 서울시");
+            PlayerFunc.setAddress(p.getUniqueId(),"@G 성북구");
+            PlayerFunc.setAddress(p.getUniqueId(),"@D 잭스동");
+            PlayerFunc.setAddress(p.getUniqueId(),"@O 길원초등학교");
 
+
+            PlayerFunc.setAddress(p.getUniqueId(),"@D 잭스동22");
+
+            Bukkit.broadcastMessage("현재 주소: "+PlayerFunc.getAddress(p.getUniqueId()));
         }
 
         return false;
