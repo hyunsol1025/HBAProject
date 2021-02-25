@@ -8,7 +8,11 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import java.util.HashMap;
+
 public class onCommand implements CommandExecutor {
+    private HashMap<Player, String> TargetAddress = new HashMap<>();
+
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         Player p = (Player)sender;
@@ -42,6 +46,19 @@ public class onCommand implements CommandExecutor {
                 } else {
                     p.sendMessage("§c§l오류! §f지역이 제대로 설정되지 않았습니다.");
                 }
+            }
+        }
+
+        else if(label.contains("hba-an")) {
+
+            if(args.length >= 1) {
+
+                TargetAddress.put(p, args[0]);
+                PlayerGlobal.LYUMAP_REGMODE.put(p,true);
+
+            } else {
+
+                PlayerGlobal.LYUMAP_REGMODE.put(p,false);
             }
         }
         return false;

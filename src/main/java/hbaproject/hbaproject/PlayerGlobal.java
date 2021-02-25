@@ -18,4 +18,8 @@ public class PlayerGlobal {
 
     // PLAYER MANAGER
     public static HashMap<UUID, ArrayList<String>> Player_Address = new HashMap<>();
+
+    // LYUMAP MANAGER
+    public static HashMap<Player, Boolean> LYUMAP_REGMODE = new HashMap<>();
+
 }
