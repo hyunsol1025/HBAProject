@@ -13,5 +13,6 @@ public class PlayerGlobal {
     public static HashMap<Player, Location> pos1 = new HashMap<Player, Location>();
     public static HashMap<Player, Location> pos2 = new HashMap<Player, Location>();
 
-
+    // REGION MANAGER
+    public static HashMap<Player, Boolean> Region_Show = new HashMap<>();
 }
