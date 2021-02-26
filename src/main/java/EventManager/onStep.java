@@ -10,6 +10,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerMoveEvent;
+import org.bukkit.util.Vector;
 
 public class onStep implements Listener {
 
@@ -18,22 +19,28 @@ public class onStep implements Listener {
 
         if(e.getFrom().getX() == e.getTo().getX() && e.getFrom().getY() == e.getTo().getY() && e.getFrom().getZ() == e.getTo().getZ()) return;
 
-        Location loc = new Location(e.getPlayer().getWorld(),
-                Integer.parseInt(""+Math.round(e.getTo().getX())),
-                Integer.parseInt(""+Math.round(e.getTo().getY())),
-                Integer.parseInt(""+Math.round(e.getTo().getZ())));
-
-        if(!ServerGlobal.Region_Locations.containsKey(loc.toBlockLocation())) return;
-        Bukkit.broadcastMessage("구역에 입장함!");
         Player p = e.getPlayer();
-        
-        // 류맵: 안내
-        if(!PlayerGlobal.LYUMAP_TARGETADDRESS.get(p.getUniqueId()).equals("")) {
-            Announce.LetAnnounce(p,p.getLocation().toBlockLocation(),PlayerGlobal.LYUMAP_TARGETADDRESS.get(p.getUniqueId()));
-        }
+        Location locToBlock = p.getLocation().toBlockLocation();
+
+        locToBlock.setPitch(0);
+        locToBlock.setYaw(0);
 
         // 플레이어 주소 변경
-        String newAddress = ServerGlobal.Region_Locations.get(loc);
-        PlayerFunc.setAddress(p.getUniqueId(),newAddress);
+        if(ServerGlobal.Region_Locations.containsKey(locToBlock)) {
+            Bukkit.broadcastMessage("구역에 입장함!");
+
+            String newAddress = ServerGlobal.Region_Locations.get(locToBlock);
+            PlayerFunc.setAddress(p.getUniqueId(),newAddress);
+            return;
+        }
+
+        // 류맵: 안내
+        if(!PlayerGlobal.LYUMAP_TARGETADDRESS.get(p.getUniqueId()).equals("") &&
+            ServerGlobal.Lyumap_Announce.containsKey(locToBlock)) {
+
+            Announce.LetAnnounce(p,locToBlock,PlayerGlobal.LYUMAP_TARGETADDRESS.get(p.getUniqueId()));
+        }
+
+
     }
 }

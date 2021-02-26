@@ -217,6 +217,8 @@ public class Hyunsolapi {
     }
 
     public static void save(HashMap map, String fileName) {
+        if(map.isEmpty()) return;
+
         File f = new File(HBAProject.getInstace().getDataFolder()+"/"+fileName+".hyun");
 
         try {
@@ -224,7 +226,7 @@ public class Hyunsolapi {
             map.forEach((key, value) -> {
 
                 try {
-                    w.write(ObjectToByte(key)+"|"+ObjectToByte(value)+"\n");
+                    w.write(""+ObjectToByte(map));
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -240,7 +242,12 @@ public class Hyunsolapi {
     public static void load(HashMap map, String fileName) {
         String line = "";
 
-        File f = new File(HBAProject.getInstace().getDataFolder()+"/"+fileName);
+        File f = new File(HBAProject.getInstace().getDataFolder()+"/"+fileName+".hyun");
+
+        if(!f.exists()) {
+            System.out.println("§c§l[로드오류] 파일이 존재하지 않습니다. ("+fileName+".hyun)");
+            return;
+        }
 
         try {
             FileReader r = new FileReader(HBAProject.getInstace().getDataFolder()+"/"+fileName+".hyun");
@@ -251,9 +258,16 @@ public class Hyunsolapi {
                 readString += line;
             }
 
-            map.put(ByteToObject(readString.split("\\|")[0]),ByteToObject(readString.split("\\|")[1]));
+            if(readString.equals("")) {
+                System.out.println("§c§l[로드오류] 파일이 비었습니다. ("+fileName+".hyun)");
+                return;
+            }
+
+            map.putAll((HashMap)ByteToObject(readString));
 
         } catch (IOException e) {
+            System.out.println("§c§l[로드오류] §f알 수 없는 오류가 발생했습니다. ("+fileName+".hyun)");
+            System.out.println("§c§l내용: "+e);
             e.printStackTrace();
         }
 

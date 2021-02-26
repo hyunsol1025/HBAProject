@@ -55,6 +55,9 @@ public class Announce {
 
     // 안내 출력
     public static void LetAnnounce(Player author, Location targetLoc, String targetAddress) {
+        Bukkit.broadcastMessage("LetAnnounce!");
+
+        if(PlayerGlobal.Lyumap_CoolLoc.get(author).contains(targetLoc)) return;
 
         // 경로 안내 종료
         if(ServerGlobal.Lyumap_AddressLocation.containsKey(targetAddress) && ServerGlobal.Lyumap_AddressLocation.get(targetAddress).getNearbyPlayers(30,0,30).contains(author)) {
@@ -125,5 +128,13 @@ public class Announce {
 
             }
         },ttsWaitTick);
+
+        // 중복 안내 출력 쿨타임
+        PlayerGlobal.Lyumap_CoolLoc.putIfAbsent(author,new ArrayList<>());
+        PlayerGlobal.Lyumap_CoolLoc.get(author).add(targetLoc);
+
+        Bukkit.getScheduler().runTaskLater(HBAProject.getInstace(), () -> {
+
+        },25*20);
     }
 }

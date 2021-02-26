@@ -40,7 +40,9 @@ public final class HBAProject extends JavaPlugin {
     public void onEnable() {
         instace = this;
         protocolManager = ProtocolLibrary.getProtocolManager();
-        
+
+        getDataFolder().mkdir();
+
         // 이벤트 등록
         getServer().getPluginManager().registerEvents(new onConnect(), this);
         getServer().getPluginManager().registerEvents(new onRightClick(), this);
@@ -51,6 +53,17 @@ public final class HBAProject extends JavaPlugin {
         this.getCommand("hba-region").setExecutor(new onCommand());
         this.getCommand("hba-an").setExecutor(new onCommand());
 
+        // 변수 불러오기
+        Hyunsolapi.load(ServerGlobal.Lyumap_Announce,"Lyumap_Announce");
+        Hyunsolapi.load(ServerGlobal.Lyumap_AddressLocation,"Lyumap_AddressLocation");
+        Hyunsolapi.load(ServerGlobal.Region_Locations,"Region_Locations");
+
+        Hyunsolapi.load(PlayerGlobal.Lyumap_FIXEDMETA,"Lyumap_FIXEDMETA");
+        Hyunsolapi.load(PlayerGlobal.LYUMAP_TARGETADDRESS,"Lyumap_TARGETADDRESS");
+
+        Hyunsolapi.load(PlayerGlobal.Player_Address,"Player_Address");
+
+
         Timer.MapDefaultSet();
         PacketListeners.PacketListen_ServerPlayerListText(this);
     }
@@ -58,6 +71,15 @@ public final class HBAProject extends JavaPlugin {
     @Override
     public void onDisable() {
 
+        // 변수 저장
+        Hyunsolapi.save(ServerGlobal.Lyumap_Announce,"Lyumap_Announce");
+        Hyunsolapi.save(ServerGlobal.Lyumap_AddressLocation,"Lyumap_AddressLocation");
+        Hyunsolapi.save(ServerGlobal.Region_Locations,"Region_Locations");
+
+        Hyunsolapi.save(PlayerGlobal.Lyumap_FIXEDMETA,"Lyumap_FIXEDMETA");
+        Hyunsolapi.save(PlayerGlobal.LYUMAP_TARGETADDRESS,"Lyumap_TARGETADDRESS");
+
+        Hyunsolapi.save(PlayerGlobal.Player_Address,"Player_Address");
     }
 
     @Override
@@ -67,8 +89,13 @@ public final class HBAProject extends JavaPlugin {
         if(label.contains("helloworld")) {
             PlayerGlobal.LYUMAP_TARGETADDRESS.put(p.getUniqueId(),"서울시");
 
-            Bukkit.broadcastMessage("Address: "+PlayerFunc.getAddress(p.getUniqueId()));
+            Bukkit.broadcastMessage("자, 신발 잘봐 : ");
+            Bukkit.broadcastMessage("현재 위치: "+p.getLocation().toBlockLocation());
+            ServerGlobal.Lyumap_Announce.forEach((key, value) -> {
+                Bukkit.broadcastMessage("key: "+key.getX()+", "+key.getY()+", "+key.getZ()+","+key.getPitch()+","+key.getYaw()+" / value: "+value);
+            });
 
+            Bukkit.broadcastMessage("Address: "+PlayerFunc.getAddress(p.getUniqueId()));
             //for(Player p2 : Bukkit.getOnlinePlayers()) {
             //    ServerGlobal.Lyumap_Announce.put(p.getLocation(),new ArrayList<>(Arrays.asList("잭스초@5@현솔IC@right")));
             //    Announce.LetAnnounce(p,p.getLocation(),"잭스초");

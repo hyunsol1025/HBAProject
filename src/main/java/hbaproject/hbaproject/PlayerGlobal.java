@@ -24,5 +24,7 @@ public class PlayerGlobal {
     public static HashMap<Player, Boolean> LYUMAP_REGMODE = new HashMap<>();        // 류맵설정 모드인가?
     public static HashMap<Player, String> Lyumap_FIXEDMETA = new HashMap<>();              // 류맵설정 고정 메타데이터
 
+    public static HashMap<Player, ArrayList<Location>> Lyumap_CoolLoc = new HashMap<>();    // 중복 안내 쿨타임 좌표 목록
+
     public static HashMap<UUID, String> LYUMAP_TARGETADDRESS = new HashMap<>();   // 경로를 안내 중인가?
 }

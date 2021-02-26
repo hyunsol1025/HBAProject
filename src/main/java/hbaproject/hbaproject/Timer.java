@@ -19,7 +19,6 @@ public class Timer {
                     PlayerGlobal.LYUMAP_TARGETADDRESS.putIfAbsent(p.getUniqueId(),"");
                 }
 
-                ServerGlobal.Lyumap_Announce.putIfAbsent(null,new ArrayList<>());
             }
         }.runTaskTimer(HBAProject.getInstace(), 0, 20);
     }
