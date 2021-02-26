@@ -17,6 +17,7 @@ public class Timer {
 
                     PlayerGlobal.LYUMAP_REGMODE.putIfAbsent(p,false);
                     PlayerGlobal.LYUMAP_TARGETADDRESS.putIfAbsent(p.getUniqueId(),"");
+                    PlayerGlobal.Lyumap_CoolLoc.putIfAbsent(p,new ArrayList<>());
                 }
 
             }

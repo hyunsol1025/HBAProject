@@ -46,10 +46,12 @@ public class Announce {
         for(String e : ServerGlobal.Lyumap_Announce.get(targetLoc)) {
             if(e.contains(targetAddress)) {
                 ServerGlobal.Lyumap_Announce.get(targetLoc).remove(e);
+
+                if(ServerGlobal.Lyumap_Announce.get(targetLoc).size() == 0) ServerGlobal.Lyumap_Announce.remove(targetLoc);
+
                 return true;
             }
         }
-
         return false;
     }
 
@@ -78,6 +80,9 @@ public class Announce {
                 break;
             }
         }
+        if(AnnounceMeta.length == 0) return;
+
+        Bukkit.broadcastMessage(""+AnnounceMeta);
 
         // TTS 출력
         int ttsWaitTick = 0;
@@ -134,7 +139,7 @@ public class Announce {
         PlayerGlobal.Lyumap_CoolLoc.get(author).add(targetLoc);
 
         Bukkit.getScheduler().runTaskLater(HBAProject.getInstace(), () -> {
-
+            PlayerGlobal.Lyumap_CoolLoc.get(author).remove(targetLoc);
         },25*20);
     }
 }

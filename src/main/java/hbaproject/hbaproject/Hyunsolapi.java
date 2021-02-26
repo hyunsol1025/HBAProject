@@ -223,15 +223,12 @@ public class Hyunsolapi {
 
         try {
             FileWriter w = new FileWriter(f);
-            map.forEach((key, value) -> {
 
-                try {
-                    w.write(""+ObjectToByte(map));
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-
-            });
+            try {
+                w.write(""+ObjectToByte(map));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
 
             w.close();
         } catch (IOException e) {
@@ -255,7 +252,7 @@ public class Hyunsolapi {
             String readString = "";
 
             while((line = buf.readLine()) != null) {
-                readString += line;
+                if(!line.equals("")) readString += line;
             }
 
             if(readString.equals("")) {

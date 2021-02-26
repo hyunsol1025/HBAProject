@@ -87,14 +87,8 @@ public final class HBAProject extends JavaPlugin {
         Player p = (Player)sender;
 
         if(label.contains("helloworld")) {
-            PlayerGlobal.LYUMAP_TARGETADDRESS.put(p.getUniqueId(),"서울시");
-
-            Bukkit.broadcastMessage("자, 신발 잘봐 : ");
-            Bukkit.broadcastMessage("현재 위치: "+p.getLocation().toBlockLocation());
-            ServerGlobal.Lyumap_Announce.forEach((key, value) -> {
-                Bukkit.broadcastMessage("key: "+key.getX()+", "+key.getY()+", "+key.getZ()+","+key.getPitch()+","+key.getYaw()+" / value: "+value);
-            });
-
+            PlayerGlobal.LYUMAP_TARGETADDRESS.put(p.getUniqueId(),"플로스 시");
+            Bukkit.broadcastMessage("목적지를 플로스 시로 설정함!");
             Bukkit.broadcastMessage("Address: "+PlayerFunc.getAddress(p.getUniqueId()));
             //for(Player p2 : Bukkit.getOnlinePlayers()) {
             //    ServerGlobal.Lyumap_Announce.put(p.getLocation(),new ArrayList<>(Arrays.asList("잭스초@5@현솔IC@right")));
