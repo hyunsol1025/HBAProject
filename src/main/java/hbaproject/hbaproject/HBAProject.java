@@ -64,7 +64,9 @@ public final class HBAProject extends JavaPlugin {
         Player p = (Player)sender;
 
         if(label.contains("helloworld")) {
-            
+            for(Player p2 : Bukkit.getOnlinePlayers()) {
+                p2.spigot().respawn();
+            }
         }
 
         return false;

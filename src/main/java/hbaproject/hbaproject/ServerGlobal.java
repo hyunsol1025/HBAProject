@@ -13,6 +13,7 @@ public class ServerGlobal {
 
     // LYUMAP MANAGER
     public static ArrayList<Location> Lyumap = new ArrayList<>();
+    public static HashMap<String, Location> Lyumap_AddressLocation = new HashMap<>();
     public static HashMap<Location, ArrayList<String>> Lyumap_Announce = new HashMap<>();
 
 }

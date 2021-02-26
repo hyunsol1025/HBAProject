@@ -25,6 +25,8 @@ public class onStep implements Listener {
         if(!ServerGlobal.Region_Locations.containsKey(loc)) return;
 
         Player p = e.getPlayer();
+
+        // 플레이어 주소 변경
         String newAddress = ServerGlobal.Region_Locations.get(loc);
 
         PlayerFunc.setAddress(p.getUniqueId(),newAddress);
