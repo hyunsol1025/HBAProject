@@ -55,11 +55,21 @@ public class Announce {
         return false;
     }
 
+    private static String getAnnounceMeta(Location targetLoc, String targetAddress) {
+        for(String e : ServerGlobal.Lyumap_Announce.get(targetLoc)) {
+            if(e.contains(targetAddress)) {
+                return e;
+            }
+        }
+
+        return null;
+    }
+
     // 안내 출력
     public static void LetAnnounce(Player author, Location targetLoc, String targetAddress) {
         Bukkit.broadcastMessage("LetAnnounce!");
 
-        if(PlayerGlobal.Lyumap_CoolLoc.get(author).contains(targetLoc)) return;
+        if(PlayerGlobal.Lyumap_CoolLoc.get(author).contains(getAnnounceMeta(targetLoc,targetAddress))) return;
 
         // 경로 안내 종료
         if(ServerGlobal.Lyumap_AddressLocation.containsKey(targetAddress) && ServerGlobal.Lyumap_AddressLocation.get(targetAddress).getNearbyPlayers(30,0,30).contains(author)) {
@@ -73,16 +83,13 @@ public class Announce {
         if(!ServerGlobal.Lyumap_Announce.containsKey(targetLoc)) return;
 
         String[] AnnounceMeta = new String[0];
+        String OldAnnounceMeta = "";
 
-        for(String e : ServerGlobal.Lyumap_Announce.get(targetLoc)) {
-            if(e.contains(targetAddress)) {
-                AnnounceMeta = e.split("@");
-                break;
-            }
-        }
+        OldAnnounceMeta = getAnnounceMeta(targetLoc,targetAddress);
+        AnnounceMeta = OldAnnounceMeta != null ? OldAnnounceMeta.split("@") : new String[0];
+
+        // AnnounceMeta 오류! (오류해결 필요)
         if(AnnounceMeta.length == 0) return;
-
-        Bukkit.broadcastMessage(""+AnnounceMeta);
 
         // TTS 출력
         int ttsWaitTick = 0;
@@ -116,7 +123,7 @@ public class Announce {
 
             case "NA":
                 author.playSound(author.getLocation(),"lyumap.na",1,1);
-                return;
+                break;
         }
 
         String finalAnnounceMeta = AnnounceMeta[3];
@@ -136,10 +143,12 @@ public class Announce {
 
         // 중복 안내 출력 쿨타임
         PlayerGlobal.Lyumap_CoolLoc.putIfAbsent(author,new ArrayList<>());
-        PlayerGlobal.Lyumap_CoolLoc.get(author).add(targetLoc);
+        PlayerGlobal.Lyumap_CoolLoc.get(author).add(OldAnnounceMeta);
+
+        String finalOldAnnounceMeta = OldAnnounceMeta;
 
         Bukkit.getScheduler().runTaskLater(HBAProject.getInstace(), () -> {
-            PlayerGlobal.Lyumap_CoolLoc.get(author).remove(targetLoc);
+            PlayerGlobal.Lyumap_CoolLoc.get(author).remove(finalOldAnnounceMeta);
         },25*20);
     }
 }

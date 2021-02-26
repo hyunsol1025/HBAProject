@@ -225,7 +225,12 @@ public class Hyunsolapi {
             FileWriter w = new FileWriter(f);
 
             try {
-                w.write(""+ObjectToByte(map));
+                if(!map.isEmpty()) {
+                    w.write(""+ObjectToByte(map));
+                } else {
+                    w.write("a");
+                }
+
             } catch (IOException e) {
                 e.printStackTrace();
             }

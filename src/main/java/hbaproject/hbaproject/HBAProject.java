@@ -63,6 +63,7 @@ public final class HBAProject extends JavaPlugin {
 
         Hyunsolapi.load(PlayerGlobal.Player_Address,"Player_Address");
 
+        System.out.println("세이브 로드 Announce: "+ServerGlobal.Lyumap_Announce);
 
         Timer.MapDefaultSet();
         PacketListeners.PacketListen_ServerPlayerListText(this);
