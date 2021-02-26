@@ -1,12 +1,14 @@
 package LyumapManager;
 
 import hbaproject.hbaproject.HBAProject;
+import hbaproject.hbaproject.PlayerGlobal;
 import hbaproject.hbaproject.ServerGlobal;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
-public class AnnounceReg {
+public class Announce {
 
     /*
 
@@ -47,12 +49,22 @@ public class AnnounceReg {
 
     // 안내 출력
     public static void LetAnnounce(Player author, Location targetLoc, String targetAddress) {
+
+        // 경로 안내 종료
+        if(ServerGlobal.Lyumap_AddressLocation.containsKey(targetAddress) && ServerGlobal.Lyumap_AddressLocation.get(targetAddress).getNearbyPlayers(30,0,30).contains(author)) {
+            PlayerGlobal.LYUMAP_ANNOUNCEMODE.put(author,false);
+            author.sendActionBar("§5§l[ 류맵 ] §f경로 안내를 종료합니다.");
+            author.playSound(author.getLocation(),"lyumap.finish",1,0);
+            return;
+        }
+
+        Bukkit.broadcastMessage("진입!");
         if(!ServerGlobal.Lyumap_Announce.containsKey(targetLoc)) return;
 
         String[] AnnounceMeta = new String[0];
 
         for(String e : ServerGlobal.Lyumap_Announce.get(targetLoc)) {
-            if(e.contains(targetAddress+"-")) {
+            if(e.contains(targetAddress)) {
                 AnnounceMeta = e.split("@");
                 break;
             }
@@ -69,28 +81,27 @@ public class AnnounceReg {
         // 거리로 안내
         switch(AnnounceMeta[1]) {
             case "5":
-                author.playSound(author.getLocation(),"lyumap.5",1,0);
+                author.playSound(author.getLocation(),"lyumap.5",1,1);
                 ttsWaitTick = 20;
                 break;
 
             case "10":
-                author.playSound(author.getLocation(),"lyumap.10",1,0);
+                author.playSound(author.getLocation(),"lyumap.10",1,1);
                 ttsWaitTick = 20;
                 break;
 
             case "50":
-                author.playSound(author.getLocation(),"lyumap.50",1,0);
+                author.playSound(author.getLocation(),"lyumap.50",1,1);
                 ttsWaitTick = 20;
                 break;
 
             case "100":
-                author.playSound(author.getLocation(),"lyumap.100",1,0);
+                author.playSound(author.getLocation(),"lyumap.100",1,1);
                 ttsWaitTick = 20;
                 break;
 
             case "NA":
-                author.playSound(author.getLocation(),"lyumap.na",1,0);
-                ttsWaitTick = 40;
+                author.playSound(author.getLocation(),"lyumap.na",1,1);
                 return;
         }
 
@@ -99,9 +110,13 @@ public class AnnounceReg {
         Bukkit.getScheduler().runTaskLater(HBAProject.getInstace(), () -> {
             switch(finalAnnounceMeta) {
                 case "right":
+                    author.playSound(author.getLocation(),"lyumap.goright",1,1);
                     break;
+
                 case "left":
+                    author.playSound(author.getLocation(),"lyumap.goleft",1,1);
                     break;
+
             }
         },ttsWaitTick);
     }

@@ -22,13 +22,12 @@ public class onStep implements Listener {
                 Integer.parseInt(""+Math.round(e.getTo().getY())),
                 Integer.parseInt(""+Math.round(e.getTo().getZ())));
 
-        if(!ServerGlobal.Region_Locations.containsKey(loc)) return;
-
+        if(!ServerGlobal.Region_Locations.containsKey(loc.toBlockLocation())) return;
+        Bukkit.broadcastMessage("구역에 입장함!");
         Player p = e.getPlayer();
 
         // 플레이어 주소 변경
         String newAddress = ServerGlobal.Region_Locations.get(loc);
-
         PlayerFunc.setAddress(p.getUniqueId(),newAddress);
     }
 }

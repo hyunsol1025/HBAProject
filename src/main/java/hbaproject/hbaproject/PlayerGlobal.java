@@ -16,10 +16,11 @@ public class PlayerGlobal {
     // REGION MANAGER
     public static HashMap<Player, Boolean> Region_Show = new HashMap<>();
 
+
     // PLAYER MANAGER
     public static HashMap<UUID, ArrayList<String>> Player_Address = new HashMap<>();
 
     // LYUMAP MANAGER
     public static HashMap<Player, Boolean> LYUMAP_REGMODE = new HashMap<>();
-
+    public static HashMap<Player, Boolean> LYUMAP_ANNOUNCEMODE = new HashMap<>();
 }

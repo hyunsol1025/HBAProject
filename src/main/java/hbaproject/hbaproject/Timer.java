@@ -11,7 +11,10 @@ public class Timer {
             public void run()
             {
                 for(Player p : Bukkit.getOnlinePlayers()) {
+                    PlayerGlobal.Region_Show.putIfAbsent(p,false);
 
+                    PlayerGlobal.LYUMAP_REGMODE.putIfAbsent(p,false);
+                    PlayerGlobal.LYUMAP_ANNOUNCEMODE.putIfAbsent(p,false);
                 }
             }
         }.runTaskTimer(HBAProject.getInstace(), 0, 20);

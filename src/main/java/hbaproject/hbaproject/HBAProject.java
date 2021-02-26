@@ -1,9 +1,7 @@
 package hbaproject.hbaproject;
 
-import EventManager.onConnect;
-import EventManager.onLeftClick;
-import EventManager.onRightClick;
-import EventManager.onStep;
+import EventManager.*;
+import LyumapManager.Announce;
 import PacketManager.PacketListeners;
 import PlayerManager.PlayerFunc;
 import com.comphenix.protocol.PacketType;
@@ -28,6 +26,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public final class HBAProject extends JavaPlugin {
     private static HBAProject instace;
@@ -49,6 +48,8 @@ public final class HBAProject extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new onStep(),this);
 
         // 커맨드 등록
+        this.getCommand("hba-region").setExecutor(new onCommand());
+        this.getCommand("hba-an").setExecutor(new onCommand());
 
         Timer.MapDefaultSet();
         PacketListeners.PacketListen_ServerPlayerListText(this);
@@ -64,9 +65,12 @@ public final class HBAProject extends JavaPlugin {
         Player p = (Player)sender;
 
         if(label.contains("helloworld")) {
-            for(Player p2 : Bukkit.getOnlinePlayers()) {
-                p2.spigot().respawn();
-            }
+            Bukkit.broadcastMessage("Address: "+PlayerFunc.getAddress(p.getUniqueId()));
+
+            //for(Player p2 : Bukkit.getOnlinePlayers()) {
+            //    ServerGlobal.Lyumap_Announce.put(p.getLocation(),new ArrayList<>(Arrays.asList("잭스초@5@현솔IC@right")));
+            //    Announce.LetAnnounce(p,p.getLocation(),"잭스초");
+            //}
         }
 
         return false;

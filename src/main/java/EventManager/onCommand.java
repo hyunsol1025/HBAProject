@@ -8,6 +8,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class onCommand implements CommandExecutor {
@@ -43,9 +44,28 @@ public class onCommand implements CommandExecutor {
                         RegionFunc.setRegion(p,args[1], true);
                     }
 
+                    else if(args[0].equals("show")) {
+                        if(ServerGlobal.Region_Locations.containsValue(args[1])) {
+                            RegionFunc.showRegionArea(p,args[1]);
+                        } else {
+                            p.sendMessage("§c§l오류! §f해당 구역은 등록되지 않았습니다.");
+                        }
+                    }
+
+                    else if(args[0].equals("list")) {
+                        for(String e : ServerGlobal.Region_Locations.values()) {
+                            p.sendMessage("§f- "+e);
+                        }
+                    } else {
+                        p.sendMessage("§c§l오류! §f명령 옵션이 제대로 설정되지 않았습니다.");
+                    }
+
                 } else {
                     p.sendMessage("§c§l오류! §f지역이 제대로 설정되지 않았습니다.");
                 }
+
+            } else {
+                p.sendMessage("§c§l오류! §f명령 옵션이 제대로 설정되지 않았습니다.");
             }
         }
 

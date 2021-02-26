@@ -16,6 +16,7 @@ public class onLeftClick implements Listener {
         Player p = e.getPlayer();
 
         if((e.getAction() != Action.LEFT_CLICK_BLOCK && e.getAction() != Action.LEFT_CLICK_AIR) || p.getInventory().getItemInMainHand().getType() == Material.AIR) return;
+        if(e.getClickedBlock() == null) return;
 
         ItemStack item = p.getInventory().getItemInMainHand();
 

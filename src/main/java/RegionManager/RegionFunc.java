@@ -54,19 +54,16 @@ public class RegionFunc {
         // pos2에 대한 y -> x,z
         for(int lx = x2; lx != x1+ax; lx += ax) {
             for(int lz = z2; lz != z1+az; lz += az) {
-                Bukkit.broadcastMessage("x = "+lx+", z = "+lz);
                 targetLocs.add(targetLoc.clone().set(lx,y2,lz));
             }
         }
 
         for(int ly = y2; ly != y1+ay; ly += ay) {
             for(int lx = x2; lx != x1+ax; lx += ax) {
-                Bukkit.broadcastMessage("x = "+lx);
                 targetLocs.add(targetLoc.clone().set(lx,ly,z2));
             }
 
             for(int lz = z2; lz != z1+az; lz += az) {
-                Bukkit.broadcastMessage("z = "+lz);
                 targetLocs.add(targetLoc.clone().set(x2,ly,lz));
             }
         }
@@ -75,25 +72,28 @@ public class RegionFunc {
 
             // 구역설정
             for(Location loc : targetLocs) {
-                if(!ServerGlobal.Region_Locations.get(loc).isEmpty()) {
-                    author.sendMessage("§6§l경고! §f이미 지정된 구역: §f"+loc.getX()+", §f"+loc.getY()+", "+loc.getZ()+" -> "+ServerGlobal.Region_Locations.get(loc));
-                } else {
-                    ServerGlobal.Region_Locations.put(loc,regionName);
+                if(ServerGlobal.Region_Locations.containsKey(loc)) {
+                    author.sendMessage("§6§l경고! §f이미 지정된 구역: §f"+loc.getX()+", §f"+loc.getY()+", "+loc.getZ()+" ["+ServerGlobal.Region_Locations.get(loc)+"로 이미 지정됨.]");
                 }
+                ServerGlobal.Region_Locations.put(loc,regionName);
             }
+
+            author.sendMessage("§a§l구역지정 §f구역지정을 완료함. -> "+regionName);
+
         } else {
 
             // 구역제거
             for(Location loc : targetLocs) {
-                ServerGlobal.Region_Locations.remove(loc);
+                if(ServerGlobal.Region_Locations.containsKey(loc)) {
+                    ServerGlobal.Region_Locations.remove(loc);
+                }
             }
+            author.sendMessage("§c§l구역제거 §f구역을 제거함. -> "+regionName);
         }
-
-        author.sendMessage("§a§l구역지정 §f구역지정을 완료함 -> "+regionName);
     }
 
     // 이미 지정된 구역 표시
-    public static void getRegionArea(Player author, String regionName) {
+    public static void showRegionArea(Player author, String regionName) {
 
         if(!PlayerGlobal.Region_Show.get(author)) {
             BlockData b = Material.LIGHT_BLUE_STAINED_GLASS.createBlockData();

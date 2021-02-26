@@ -7,3 +7,5 @@ description: HBAProject Plugin
 depend: [ProtocolLib]
 commands:
   helloworld:
+  hba-region:
+  hba-an:
