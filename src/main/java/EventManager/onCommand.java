@@ -3,6 +3,7 @@ package EventManager;
 import RegionManager.RegionFunc;
 import hbaproject.hbaproject.PlayerGlobal;
 import hbaproject.hbaproject.ServerGlobal;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.data.BlockData;
@@ -82,7 +83,15 @@ public class onCommand implements CommandExecutor {
 
                     String tmpStr = "";
 
-                    for (int i = 0; i < args.length; i++) tmpStr += args[i];
+                    for (int i = 1; i < args.length; i++) {
+
+                        if(i+1 == args.length) {
+                            tmpStr += args[i];
+                        } else {
+                            tmpStr += args[i]+" ";
+                        }
+
+                    }
 
                     PlayerGlobal.Lyumap_FIXEDMETA.put(p, tmpStr);
                     p.sendMessage("§a§l확인! §f류맵 메타데이터가 고정되었습니다. [" + tmpStr + "]");
@@ -98,9 +107,15 @@ public class onCommand implements CommandExecutor {
                         BlockData b = Material.PURPLE_STAINED_GLASS.createBlockData();
 
                         ServerGlobal.Lyumap_Announce.forEach((key, value) -> {
-                            if (value.contains(args[1])) {
-                                p.sendBlockChange(key, b);
+                            Bukkit.broadcastMessage("비교중 : "+key+" / "+value);
+
+                            for(String e : value) {
+                                if(e.contains(args[1])) {
+                                    p.sendBlockChange(key, b);
+                                    Lyumap_Show.get(p).add(key);
+                                }
                             }
+
                         });
 
                         p.sendMessage("§a§l류맵표시! §f류맵안내 구역을 표시합니다.");

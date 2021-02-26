@@ -8,6 +8,8 @@ import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
+import java.util.ArrayList;
+
 public class Announce {
 
     /*
@@ -22,29 +24,33 @@ public class Announce {
 
 
     // 안내 추가
-    public static void AddAnnounce(Location targetLoc, String targetAddress, String AnnounceMeta) {
-        for(String e : ServerGlobal.Lyumap_Announce.get(targetLoc)) {
-            if(e.contains(targetAddress+"-")) {
-                ServerGlobal.Lyumap_Announce.get(targetLoc).remove(targetAddress+"@"+AnnounceMeta);
-                break;
+    public static void AddAnnounce(Location targetLoc, String AnnounceMeta) {
+        if(ServerGlobal.Lyumap_Announce.containsKey(targetLoc)) {
+
+            for (String e : ServerGlobal.Lyumap_Announce.get(targetLoc)) {
+                if (e.contains(AnnounceMeta.split("@")[0])) {
+                    ServerGlobal.Lyumap_Announce.get(targetLoc).remove(e);
+                    break;
+                }
             }
+
         }
 
-        ServerGlobal.Lyumap_Announce.get(targetLoc).add(targetAddress+"-"+AnnounceMeta);
+        ServerGlobal.Lyumap_Announce.putIfAbsent(targetLoc,new ArrayList<>());
+        ServerGlobal.Lyumap_Announce.get(targetLoc).add(AnnounceMeta);
     }
 
     // 안내 삭제
-    public static void DelAnnounce(Location targetLoc, String targetAddress) {
-        int i = 0;
+    public static boolean DelAnnounce(Location targetLoc, String targetAddress) {
 
         for(String e : ServerGlobal.Lyumap_Announce.get(targetLoc)) {
-            if(e.contains(targetAddress+"-")) {
-                ServerGlobal.Lyumap_Announce.get(targetLoc).remove(i);
-                break;
+            if(e.contains(targetAddress)) {
+                ServerGlobal.Lyumap_Announce.get(targetLoc).remove(e);
+                return true;
             }
-
-            i++;
         }
+
+        return false;
     }
 
     // 안내 출력
@@ -52,7 +58,7 @@ public class Announce {
 
         // 경로 안내 종료
         if(ServerGlobal.Lyumap_AddressLocation.containsKey(targetAddress) && ServerGlobal.Lyumap_AddressLocation.get(targetAddress).getNearbyPlayers(30,0,30).contains(author)) {
-            PlayerGlobal.LYUMAP_ANNOUNCEMODE.put(author,false);
+            PlayerGlobal.LYUMAP_TARGETADDRESS.put(author.getUniqueId(),"");
             author.sendActionBar("§5§l[ 류맵 ] §f경로 안내를 종료합니다.");
             author.playSound(author.getLocation(),"lyumap.finish",1,0);
             return;

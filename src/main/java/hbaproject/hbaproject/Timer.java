@@ -4,6 +4,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import java.util.ArrayList;
+
 public class Timer {
     public static void MapDefaultSet() {
         new BukkitRunnable( ) {
@@ -14,8 +16,10 @@ public class Timer {
                     PlayerGlobal.Region_Show.putIfAbsent(p,false);
 
                     PlayerGlobal.LYUMAP_REGMODE.putIfAbsent(p,false);
-                    PlayerGlobal.LYUMAP_ANNOUNCEMODE.putIfAbsent(p,false);
+                    PlayerGlobal.LYUMAP_TARGETADDRESS.putIfAbsent(p.getUniqueId(),"");
                 }
+
+                ServerGlobal.Lyumap_Announce.putIfAbsent(null,new ArrayList<>());
             }
         }.runTaskTimer(HBAProject.getInstace(), 0, 20);
     }

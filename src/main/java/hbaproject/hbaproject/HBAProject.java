@@ -65,6 +65,8 @@ public final class HBAProject extends JavaPlugin {
         Player p = (Player)sender;
 
         if(label.contains("helloworld")) {
+            PlayerGlobal.LYUMAP_TARGETADDRESS.put(p.getUniqueId(),"서울시");
+
             Bukkit.broadcastMessage("Address: "+PlayerFunc.getAddress(p.getUniqueId()));
 
             //for(Player p2 : Bukkit.getOnlinePlayers()) {

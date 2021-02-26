@@ -1,5 +1,6 @@
 package EventManager;
 
+import LyumapManager.Announce;
 import PlayerManager.PlayerFunc;
 import hbaproject.hbaproject.PlayerGlobal;
 import hbaproject.hbaproject.ServerGlobal;
@@ -25,6 +26,11 @@ public class onStep implements Listener {
         if(!ServerGlobal.Region_Locations.containsKey(loc.toBlockLocation())) return;
         Bukkit.broadcastMessage("구역에 입장함!");
         Player p = e.getPlayer();
+        
+        // 류맵: 안내
+        if(!PlayerGlobal.LYUMAP_TARGETADDRESS.get(p.getUniqueId()).equals("")) {
+            Announce.LetAnnounce(p,p.getLocation().toBlockLocation(),PlayerGlobal.LYUMAP_TARGETADDRESS.get(p.getUniqueId()));
+        }
 
         // 플레이어 주소 변경
         String newAddress = ServerGlobal.Region_Locations.get(loc);
