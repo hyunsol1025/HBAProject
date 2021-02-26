@@ -20,28 +20,28 @@ public class PlayerFunc {
 
         if(newAddress.contains("@S")) {
             PlayerGlobal.Player_Address.put(targetUUID,new ArrayList<>());
-            PlayerGlobal.Player_Address.get(targetUUID).add(newAddress.replace("@S ", ""));
+            PlayerGlobal.Player_Address.get(targetUUID).add(newAddress.replace("@S", ""));
         }
 
         // 새로운 구로 진입
         if(newAddress.contains("@G")) {
             if(getAddress(targetUUID).size() != 1) PlayerGlobal.Player_Address.get(targetUUID).remove(1);
 
-            PlayerGlobal.Player_Address.get(targetUUID).add(1, newAddress.replace("@G ", ""));
+            PlayerGlobal.Player_Address.get(targetUUID).add(1, newAddress.replace("@G", ""));
         }
 
         // 새로운 동로 진입
         if(newAddress.contains("@D")) {
             if(getAddress(targetUUID).size() != 2) PlayerGlobal.Player_Address.get(targetUUID).remove(2);
 
-            PlayerGlobal.Player_Address.get(targetUUID).add(2,newAddress.replace("@D ", ""));
+            PlayerGlobal.Player_Address.get(targetUUID).add(2,newAddress.replace("@D", ""));
         }
 
         // 새로운 구역으로 진입
         if(newAddress.contains("@O")) {
             if(getAddress(targetUUID).size() != 3) PlayerGlobal.Player_Address.get(targetUUID).remove(3);
 
-            PlayerGlobal.Player_Address.get(targetUUID).add(3,newAddress.replace("@O ", ""));
+            PlayerGlobal.Player_Address.get(targetUUID).add(3,newAddress.replace("@O", ""));
         }
 
     }

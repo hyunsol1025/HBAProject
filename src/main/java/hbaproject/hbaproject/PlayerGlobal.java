@@ -21,6 +21,8 @@ public class PlayerGlobal {
     public static HashMap<UUID, ArrayList<String>> Player_Address = new HashMap<>();
 
     // LYUMAP MANAGER
-    public static HashMap<Player, Boolean> LYUMAP_REGMODE = new HashMap<>();
-    public static HashMap<Player, Boolean> LYUMAP_ANNOUNCEMODE = new HashMap<>();
+    public static HashMap<Player, Boolean> LYUMAP_REGMODE = new HashMap<>();        // 류맵설정 모드인가?
+    public static HashMap<Player, String> Lyumap_FIXEDMETA = new HashMap<>();              // 류맵설정 고정 메타데이터
+
+    public static HashMap<Player, Boolean> LYUMAP_ANNOUNCEMODE = new HashMap<>();   // 경로를 안내 중인가?
 }
