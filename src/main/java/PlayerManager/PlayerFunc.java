@@ -1,8 +1,13 @@
 package PlayerManager;
 
+import com.comphenix.protocol.PacketType;
+import com.comphenix.protocol.events.PacketContainer;
+import com.comphenix.protocol.wrappers.WrappedChatComponent;
+import hbaproject.hbaproject.HBAProject;
 import hbaproject.hbaproject.PlayerGlobal;
 import org.bukkit.entity.Player;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.UUID;
@@ -43,5 +48,25 @@ public class PlayerFunc {
             PlayerGlobal.Player_Address.get(targetUUID).add(3,newAddress.replace("@O", ""));
         }
 
+    }
+
+    // 플레이어 TAP LIST HEADER & FOOTER 변경
+    public static void setTabList(Player author, String header, String footer) {
+
+        PacketContainer packet = HBAProject.getInstace().protocolManager.createPacket(PacketType.Play.Server.PLAYER_LIST_HEADER_FOOTER);
+
+        if(header != null) {
+            packet.getChatComponents().write(0, WrappedChatComponent.fromText(header));
+        }
+
+        if(footer != null) {
+            packet.getChatComponents().write(1, WrappedChatComponent.fromText(footer));
+        }
+
+        try {
+            HBAProject.getInstace().protocolManager.sendServerPacket(author,packet);
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        }
     }
 }

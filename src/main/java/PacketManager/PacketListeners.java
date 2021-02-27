@@ -18,7 +18,9 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 
 public class PacketListeners {
-    public static void PacketListen_ServerPlayerListText(HBAProject hba) {
+    public static void PacketListen_PacketListenStart(HBAProject hba) {
+
+        // 서버 플레이어 목록 변경
         HBAProject.getInstace().protocolManager.addPacketListener(new PacketAdapter(hba, ListenerPriority.NORMAL, PacketType.Status.Server.OUT_SERVER_INFO) {
             @Override
             public void onPacketSending(PacketEvent event) {
@@ -36,5 +38,6 @@ public class PacketListeners {
             }
 
         });
+
     }
 }

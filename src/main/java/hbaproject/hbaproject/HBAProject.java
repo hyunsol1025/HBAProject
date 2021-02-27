@@ -12,10 +12,7 @@ import com.comphenix.protocol.events.PacketAdapter;
 import com.comphenix.protocol.events.PacketContainer;
 import com.comphenix.protocol.events.PacketEvent;
 import com.comphenix.protocol.injector.PacketConstructor;
-import com.comphenix.protocol.wrappers.EnumWrappers;
-import com.comphenix.protocol.wrappers.WrappedDataWatcher;
-import com.comphenix.protocol.wrappers.WrappedGameProfile;
-import com.comphenix.protocol.wrappers.WrappedServerPing;
+import com.comphenix.protocol.wrappers.*;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -52,6 +49,7 @@ public final class HBAProject extends JavaPlugin {
         // 커맨드 등록
         this.getCommand("hba-region").setExecutor(new onCommand());
         this.getCommand("hba-an").setExecutor(new onCommand());
+        this.getCommand("hba-region").setTabCompleter(new TabComplete());
         this.getCommand("hba-an").setTabCompleter(new TabComplete());
 
         // 변수 불러오기
@@ -67,7 +65,7 @@ public final class HBAProject extends JavaPlugin {
         System.out.println("세이브 로드 Announce: "+ServerGlobal.Lyumap_Announce);
 
         Timer.MapDefaultSet();
-        PacketListeners.PacketListen_ServerPlayerListText(this);
+        PacketListeners.PacketListen_PacketListenStart(this);
     }
 
     @Override
@@ -89,9 +87,13 @@ public final class HBAProject extends JavaPlugin {
         Player p = (Player)sender;
 
         if(label.contains("helloworld")) {
-            PlayerGlobal.LYUMAP_TARGETADDRESS.put(p.getUniqueId(),"플로스 시");
-            Bukkit.broadcastMessage("목적지를 플로스 시로 설정함!");
-            Bukkit.broadcastMessage("Address: "+PlayerFunc.getAddress(p.getUniqueId()));
+            char c = '\uE001';
+
+            p.sendMessage(""+c);
+
+//            PlayerGlobal.LYUMAP_TARGETADDRESS.put(p.getUniqueId(),"플로스 시");
+//            Bukkit.broadcastMessage("목적지를 플로스 시로 설정함!");
+//            Bukkit.broadcastMessage("Address: "+PlayerFunc.getAddress(p.getUniqueId()));
             //for(Player p2 : Bukkit.getOnlinePlayers()) {
             //    ServerGlobal.Lyumap_Announce.put(p.getLocation(),new ArrayList<>(Arrays.asList("잭스초@5@현솔IC@right")));
             //    Announce.LetAnnounce(p,p.getLocation(),"잭스초");
