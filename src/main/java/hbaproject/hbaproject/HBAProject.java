@@ -52,6 +52,7 @@ public final class HBAProject extends JavaPlugin {
         // 커맨드 등록
         this.getCommand("hba-region").setExecutor(new onCommand());
         this.getCommand("hba-an").setExecutor(new onCommand());
+        this.getCommand("hba-an").setTabCompleter(new TabComplete());
 
         // 변수 불러오기
         Hyunsolapi.load(ServerGlobal.Lyumap_Announce,"Lyumap_Announce");

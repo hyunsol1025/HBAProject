@@ -151,4 +151,22 @@ public class Announce {
             PlayerGlobal.Lyumap_CoolLoc.get(author).remove(finalOldAnnounceMeta);
         },25*20);
     }
+
+    // 안내 추가 및 삭제 컨트롤
+    public static void AnnounceControl(Player author, Location targetLocation) {
+
+        // 이미 등록된 주소라면 삭제로 간주
+        if(ServerGlobal.Lyumap_Announce.containsKey(targetLocation) &&
+                Announce.DelAnnounce(targetLocation,PlayerGlobal.Lyumap_FIXEDMETA.get(author).split("@")[0])) {
+
+            author.sendMessage("§c§l안내삭제! §f한 블럭 위의 류맵안내 메타 데이터§7("+PlayerGlobal.Lyumap_FIXEDMETA.get(author)+"§7)§f가 제거되었습니다.");
+
+        } else {
+
+            // 없다면 추가
+            Announce.AddAnnounce(targetLocation,PlayerGlobal.Lyumap_FIXEDMETA.get(author));
+            author.sendMessage("§a§l류맵수정! §f류맵안내 메타 데이터가 추가되었습니다.");
+
+        }
+    }
 }

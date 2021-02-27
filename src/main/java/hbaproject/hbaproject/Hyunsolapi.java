@@ -217,8 +217,6 @@ public class Hyunsolapi {
     }
 
     public static void save(HashMap map, String fileName) {
-        if(map.isEmpty()) return;
-
         File f = new File(HBAProject.getInstace().getDataFolder()+"/"+fileName+".hyun");
 
         try {
@@ -228,7 +226,7 @@ public class Hyunsolapi {
                 if(!map.isEmpty()) {
                     w.write(""+ObjectToByte(map));
                 } else {
-                    w.write("a");
+                    w.write("isNull");
                 }
 
             } catch (IOException e) {
@@ -262,6 +260,11 @@ public class Hyunsolapi {
 
             if(readString.equals("")) {
                 System.out.println("§c§l[로드오류] 파일이 비었습니다. ("+fileName+".hyun)");
+                return;
+            }
+
+            if(readString.equals("isNull")) {
+                map.clear();
                 return;
             }
 

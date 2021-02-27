@@ -20,6 +20,7 @@ public class onRightClick implements Listener {
 
         ItemStack item = p.getInventory().getItemInMainHand();
 
+        // REGION MANAGER
         if(item.getType() == Material.NAME_TAG) {
             PlayerGlobal.pos1.put(p,e.getClickedBlock().getLocation());
             Bukkit.broadcastMessage(""+e.getClickedBlock().getLocation());

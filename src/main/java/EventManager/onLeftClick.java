@@ -38,19 +38,26 @@ public class onLeftClick implements Listener {
 
             Location targetLocation = e.getClickedBlock().getLocation().clone().add(0,1,0).toBlockLocation();
 
-            // 이미 등록된 주소라면 삭제로 간주
-            if(ServerGlobal.Lyumap_Announce.containsKey(targetLocation) &&
-                    Announce.DelAnnounce(targetLocation,PlayerGlobal.Lyumap_FIXEDMETA.get(p).split("@")[0])) {
+            // 여러 블럭 선택
+            if(p.isSneaking()) {
+                PlayerGlobal.Lyumap_MultiSelect.putIfAbsent(p,new ArrayList<>());
 
-                p.sendMessage("§c§l안내삭제! §f한 블럭 위의 류맵안내 메타 데이터§7("+PlayerGlobal.Lyumap_FIXEDMETA.get(p)+"§7)§f가 제거되었습니다.");
+                if (PlayerGlobal.Lyumap_MultiSelect.get(p).contains(targetLocation)) {
 
-            } else {
+                    PlayerGlobal.Lyumap_MultiSelect.get(p).remove(targetLocation);
+                    p.sendBlockChange(targetLocation, targetLocation.getBlock().getBlockData());
+                    p.sendMessage("§c§l선택해제! §f해당 블럭에 대한 선택이 해제되었습니다.");
+                } else {
 
-                // 없다면 추가
-                Announce.AddAnnounce(targetLocation,PlayerGlobal.Lyumap_FIXEDMETA.get(p));
-                p.sendMessage("§a§l류맵수정! §f류맵안내 메타 데이터가 추가되었습니다.");
+                    PlayerGlobal.Lyumap_MultiSelect.get(p).add(targetLocation);
+                    p.sendBlockChange(targetLocation, Material.LIME_CONCRETE.createBlockData());
+                    p.sendMessage("§a§l선택! §f해당 블럭을 선택하였습니다.");
+                }
 
+                return;
             }
+
+            Announce.AnnounceControl(p,targetLocation);
         }
     }
 

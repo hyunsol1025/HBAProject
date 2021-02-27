@@ -1,5 +1,6 @@
 package EventManager;
 
+import LyumapManager.Announce;
 import RegionManager.RegionFunc;
 import hbaproject.hbaproject.PlayerGlobal;
 import hbaproject.hbaproject.ServerGlobal;
@@ -17,6 +18,7 @@ import java.util.HashMap;
 
 public class onCommand implements CommandExecutor {
     private HashMap<Player, ArrayList<Location>> Lyumap_Show = new HashMap<>();
+    private HashMap<Player, Boolean> Lyumap_HideSelect = new HashMap<>();
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
@@ -128,6 +130,36 @@ public class onCommand implements CommandExecutor {
 
                         Lyumap_Show.put(p, new ArrayList<>());
                         p.sendMessage("§7§l류맵표시해제! §f류맵안내 구역 표시를 해제합니다.");
+                    }
+                }
+
+                // 멀티선택 관련
+                else if(args[0].equals("multi-select")) {
+                    Lyumap_HideSelect.putIfAbsent(p,false);
+
+                    if(args[1].equals("hide")) {
+
+                        if(Lyumap_HideSelect.get(p)) {
+
+                            Lyumap_HideSelect.put(p,false);
+                            p.sendMessage("§a§l선택보이기! §f선택한 블럭이 표시됩니다.");
+                        } else {
+
+                            Lyumap_HideSelect.put(p,true);
+                            p.sendMessage("§7§l선택가리기! §f선택한 블럭 표시를 숨깁니다.");
+                        }
+                    }
+
+                    else if(args[1].equals("set")) {
+                        if(PlayerGlobal.Lyumap_MultiSelect.get(p).size() == 0) {
+                            p.sendMessage("§c§l오류! §f선택한 블럭이 없습니다!");
+                            return false;
+                        }
+
+                        // 선택된 블럭들에 대한 AnnounceControl
+                        for(Location loc : PlayerGlobal.Lyumap_MultiSelect.get(p)) {
+                            Announce.AnnounceControl(p,loc);
+                        }
                     }
                 }
             }
