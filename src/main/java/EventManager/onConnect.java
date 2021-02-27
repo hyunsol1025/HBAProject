@@ -20,7 +20,7 @@ public class onConnect implements Listener {
         Player p = e.getPlayer();
 
         Bukkit.getScheduler().runTaskLater(HBAProject.getInstace(), () -> {
-            PlayerFunc.setTabList(p,"\uE002\n\n\n","\n§f    현재 §a§l"+Bukkit.getOnlinePlayers().size()+"§f명의 국민들과 함께하고 있습니다!§f    \n");
+            PlayerFunc.setTabList(p,"\uE002\n\n\n","\n§f    현재 §a§l"+Bukkit.getOnlinePlayers().size()+"§f명의 시민들과 함께하고 있습니다!§f    \n");
         },2);
     }
 }

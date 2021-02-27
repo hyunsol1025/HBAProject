@@ -9,6 +9,7 @@ import com.comphenix.protocol.events.PacketEvent;
 import com.comphenix.protocol.wrappers.WrappedGameProfile;
 import com.comphenix.protocol.wrappers.WrappedServerPing;
 import hbaproject.hbaproject.HBAProject;
+import hbaproject.hbaproject.Hyunsolapi;
 import hbaproject.hbaproject.ServerGlobal;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -39,5 +40,18 @@ public class PacketListeners {
 
         });
 
+        // 도전과제 UI
+        HBAProject.getInstace().protocolManager.addPacketListener(new PacketAdapter(hba, ListenerPriority.NORMAL, PacketType.Play.Client.ADVANCEMENTS) {
+            @Override
+            public void onPacketReceiving(PacketEvent event) {
+                event.setCancelled(true);
+
+                Bukkit.broadcastMessage("도전과제 창이 열렸당!");
+                Bukkit.getScheduler().runTaskLater(HBAProject.getInstace(), () -> {
+                    event.getPlayer().closeInventory();
+                    Hyunsolapi.openGUI(event.getPlayer(),27,"섹슷!!!!!");
+                },1);
+            }
+        });
     }
 }

@@ -1,29 +1,13 @@
 package hbaproject.hbaproject;
 
 import EventManager.*;
-import LyumapManager.Announce;
 import PacketManager.PacketListeners;
-import PlayerManager.PlayerFunc;
-import com.comphenix.protocol.PacketType;
 import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.ProtocolManager;
-import com.comphenix.protocol.events.ListenerPriority;
-import com.comphenix.protocol.events.PacketAdapter;
-import com.comphenix.protocol.events.PacketContainer;
-import com.comphenix.protocol.events.PacketEvent;
-import com.comphenix.protocol.injector.PacketConstructor;
-import com.comphenix.protocol.wrappers.*;
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
-
-import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.Arrays;
 
 public final class HBAProject extends JavaPlugin {
     private static HBAProject instace;
@@ -49,6 +33,8 @@ public final class HBAProject extends JavaPlugin {
         // 커맨드 등록
         this.getCommand("hba-region").setExecutor(new onCommand());
         this.getCommand("hba-an").setExecutor(new onCommand());
+
+        // TAB COMPLETER
         this.getCommand("hba-region").setTabCompleter(new TabComplete());
         this.getCommand("hba-an").setTabCompleter(new TabComplete());
 
@@ -65,6 +51,7 @@ public final class HBAProject extends JavaPlugin {
         System.out.println("세이브 로드 Announce: "+ServerGlobal.Lyumap_Announce);
 
         Timer.MapDefaultSet();
+        Timer.setTabListTimer();
         PacketListeners.PacketListen_PacketListenStart(this);
     }
 
@@ -87,9 +74,6 @@ public final class HBAProject extends JavaPlugin {
         Player p = (Player)sender;
 
         if(label.contains("helloworld")) {
-            char c = '\uE001';
-
-            p.sendMessage(""+c);
 
 //            PlayerGlobal.LYUMAP_TARGETADDRESS.put(p.getUniqueId(),"플로스 시");
 //            Bukkit.broadcastMessage("목적지를 플로스 시로 설정함!");
